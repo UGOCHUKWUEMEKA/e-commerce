@@ -6,10 +6,13 @@ from rest_framework.decorators import action
 from .models import Wishlist
 from .serializers import WishlistSerializer
 
+
 class WishlistViewSet(viewsets.ModelViewSet):
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users can access these views
+    permission_classes = [
+        IsAuthenticated
+    ]  # Only authenticated users can access these views
 
     def get_queryset(self):
         """
@@ -23,7 +26,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
         """
         serializer.save(user=self.request.user)
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=["get"])
     def view_wishlist(self, request):
         """
         View the products in the user's wishlist.
@@ -32,7 +35,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
         serializer = WishlistSerializer(wishlist, many=True)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['delete'])
+    @action(detail=True, methods=["delete"])
     def remove_from_wishlist(self, request, pk=None):
         """
         Remove a specific product from the user's wishlist.
@@ -40,5 +43,8 @@ class WishlistViewSet(viewsets.ModelViewSet):
         wishlist_item = self.get_object()
         if wishlist_item.user == request.user:
             wishlist_item.delete()
-            return Response({'message': 'Product removed from wishlist'}, status=204)
-        return Response({'message': 'You cannot remove products from other users\' wishlist'}, status=403)
+            return Response({"message": "Product removed from wishlist"}, status=204)
+        return Response(
+            {"message": "You cannot remove products from other users' wishlist"},
+            status=403,
+        )

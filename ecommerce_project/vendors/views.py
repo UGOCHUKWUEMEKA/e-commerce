@@ -6,10 +6,13 @@ from rest_framework.response import Response
 from .models import Vendor
 from .serializers import VendorSerializer
 
+
 class VendorViewSet(viewsets.ModelViewSet):
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users can access these views
+    permission_classes = [
+        IsAuthenticated
+    ]  # Only authenticated users can access these views
 
     def get_queryset(self):
         """
@@ -23,7 +26,7 @@ class VendorViewSet(viewsets.ModelViewSet):
         """
         serializer.save(user=self.request.user)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def profile(self, request, pk=None):
         """
         Custom action to retrieve the profile of a specific vendor.
@@ -32,7 +35,7 @@ class VendorViewSet(viewsets.ModelViewSet):
         serializer = VendorSerializer(vendor)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['put'])
+    @action(detail=True, methods=["put"])
     def update_profile(self, request, pk=None):
         """
         Custom action to update the vendor's profile information.

@@ -1,13 +1,20 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .models import Category, Product, Review, Discount
-from .serializers import CategorySerializer, ProductSerializer, ReviewSerializer, DiscountSerializer
+from .serializers import (
+    CategorySerializer,
+    ProductSerializer,
+    ReviewSerializer,
+    DiscountSerializer,
+)
+
 
 # Category ViewSet
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]  # You can modify permissions as needed
+
 
 # Product ViewSet
 class ProductViewSet(viewsets.ModelViewSet):
@@ -20,8 +27,8 @@ class ProductViewSet(viewsets.ModelViewSet):
         Optionally filter products by category or vendor.
         """
         queryset = Product.objects.all()
-        category = self.request.query_params.get('category')
-        vendor = self.request.query_params.get('vendor')
+        category = self.request.query_params.get("category")
+        vendor = self.request.query_params.get("vendor")
 
         if category:
             queryset = queryset.filter(category__id=category)
@@ -29,6 +36,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(vendor__id=vendor)
 
         return queryset
+
 
 # Review ViewSet
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -41,12 +49,13 @@ class ReviewViewSet(viewsets.ModelViewSet):
         Optionally filter reviews by product.
         """
         queryset = Review.objects.all()
-        product = self.request.query_params.get('product')
+        product = self.request.query_params.get("product")
 
         if product:
             queryset = queryset.filter(product__id=product)
 
         return queryset
+
 
 # Discount ViewSet
 class DiscountViewSet(viewsets.ModelViewSet):
@@ -59,7 +68,7 @@ class DiscountViewSet(viewsets.ModelViewSet):
         Optionally filter discounts by product.
         """
         queryset = Discount.objects.all()
-        product = self.request.query_params.get('product')
+        product = self.request.query_params.get("product")
 
         if product:
             queryset = queryset.filter(product__id=product)
